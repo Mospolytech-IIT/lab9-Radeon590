@@ -66,3 +66,40 @@ def search(username: str):
     else:
         print("Пользователь не найден.")
         return {"message": f"You tried to deleted: {username} and nobody found"}
+
+# Маршруты для постов
+
+@app.post("/posts/")
+def create_post(title: str, content: str, user_id: int):
+    post = Post(title=title, content=content, user_id=user_id)
+    session.add(post)
+    session.commit()
+    session.refresh(post)
+    return post
+
+@app.get("/posts/")
+def read_posts():
+    return session.query(Post).all()
+
+# Обновление content у одного из постов
+@app.patch("/posts/")
+def update_post_content():
+    print("\nОбновление контента поста с ID 1:")
+    post = session.query(Post).filter(Post.id == 1).first()
+    if post:
+        post.content = "This is updated content for the first post."
+        session.commit()
+        print(f"Контент поста обновлён: {post.content}")
+    else:
+        print("Пост с ID 1 не найден.")
+
+@app.delete("/posts/")
+def delete_post_content(id: int):
+    print(f"\nУдаление поста с ID {id}:")
+    post_to_delete = session.query(Post).filter(Post.id == id).first()
+    if post_to_delete:
+        session.delete(post_to_delete)
+        session.commit()
+        print("Пост удалён.")
+    else:
+        print(f"Пост с ID {id} не найден.")
