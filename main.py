@@ -82,6 +82,29 @@ if __name__ == "__main__":
     for post in alice_posts:
         print(f"Post ID: {post.id}, Title: {post.title}, Content: {post.content}")
 
+    # Удаление одного поста
+    print("\nУдаление поста с ID 1:")
+    post_to_delete = session.query(Post).filter(Post.id == 1).first()
+    if post_to_delete:
+        session.delete(post_to_delete)
+        session.commit()
+        print("Пост удалён.")
+    else:
+        print("Пост с ID 1 не найден.")
+
+    # Удаление пользователя и всех его постов
+    print("\nУдаление пользователя Bob и всех его постов:")
+    user_to_delete = session.query(User).filter(User.username == "Bob").first()
+    if user_to_delete:
+        # Удаление связанных постов
+        session.query(Post).filter(Post.user_id == user_to_delete.id).delete()
+        # Удаление самого пользователя
+        session.delete(user_to_delete)
+        session.commit()
+        print("Пользователь и его посты удалены.")
+    else:
+        print("Пользователь Bob не найден.")
+
     # Закрываем сессию
     session.close()
 
