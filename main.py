@@ -1,9 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import init_models, User, Post
-from fastapi import FastAPI, Request, Response, Form
-from fastapi.responses import JSONResponse, FileResponse, RedirectResponse
-from pydantic import BaseModel
+from fastapi import FastAPI
 
 # Настройки подключения
 DATABASE_URL = "mysql+pymysql://root:root@localhost:3306/pysqlalchemy"
