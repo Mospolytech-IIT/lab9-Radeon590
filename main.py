@@ -43,6 +43,25 @@ if __name__ == "__main__":
     session.commit()
     print("Посты добавлены!")
 
+    # Извлечение всех пользователей
+    print("Список пользователей:")
+    users = session.query(User).all()
+    for user in users:
+        print(f"ID: {user.id}, Username: {user.username}, Email: {user.email}")
+
+    # Извлечение всех постов с информацией о пользователях
+    print("\nСписок постов с авторами:")
+    posts = session.query(Post).all()
+    for post in posts:
+        user = session.query(User).filter(User.id == post.user_id).first()
+        print(f"Post ID: {post.id}, Title: {post.title}, Author: {user.username}")
+
+    # Извлечение постов конкретного пользователя
+    print("\nПосты пользователя Alice:")
+    alice_posts = session.query(Post).join(User).filter(User.username == "Alice").all()
+    for post in alice_posts:
+        print(f"Post ID: {post.id}, Title: {post.title}, Content: {post.content}")
+
     # Закрываем сессию
     session.close()
 
