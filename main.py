@@ -43,6 +43,26 @@ if __name__ == "__main__":
     session.commit()
     print("Посты добавлены!")
 
+    # Обновление email у одного из пользователей
+    print("\nОбновление email пользователя Bob:")
+    bob = session.query(User).filter(User.username == "Bob").first()
+    if bob:
+        bob.email = "bob_new@example.com"
+        session.commit()
+        print(f"Email обновлён: {bob.email}")
+    else:
+        print("Пользователь Bob не найден.")
+
+    # Обновление content у одного из постов
+    print("\nОбновление контента поста с ID 1:")
+    post = session.query(Post).filter(Post.id == 1).first()
+    if post:
+        post.content = "This is updated content for the first post."
+        session.commit()
+        print(f"Контент поста обновлён: {post.content}")
+    else:
+        print("Пост с ID 1 не найден.")
+
     # Извлечение всех пользователей
     print("Список пользователей:")
     users = session.query(User).all()
